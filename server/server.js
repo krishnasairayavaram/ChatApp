@@ -28,10 +28,15 @@ io.on("connection",(socket)=>{
 
 app.use(express.json({limit:"4mb"}));
 app.use(cors());
-const PORT=process.env.PORT||5000;
 app.use("/api/auth",userRouter);
 app.use("/api/messages",messageRouter);
 await connectDB();
-server.listen(PORT,()=>{
-    console.log(`app listening on port ${PORT}`);
-})
+
+if(process.env.NODE_ENV != "production"){
+    const PORT=process.env.PORT||5000;
+    server.listen(PORT,()=>{
+        console.log(`server listening on port ${PORT}`);
+    })
+}
+
+export default server;
